@@ -8,8 +8,8 @@ import advanced from "../images/icon-advanced.svg"
 import pro from "../images/icon-pro.svg"
 
 export const PlanSection = () => {
-  const {inputs,setInputs} = useContext(AppContext)
-  const {typeBilling,addonsAdded} = inputs;
+  const {inputs,setInputs,addons,setAddons} = useContext(AppContext)
+  const {typeBilling} = inputs;
   console.log("ME RENDERICE PLAN SECTION")
   useEffect(() => {
     const price = document.querySelector(".selected").querySelector(".billing-price").textContent.match(/\d+/).join("");
@@ -19,23 +19,35 @@ export const PlanSection = () => {
     })
   },[typeBilling])
 
+  
   const handleChange = ({target}) =>{
-    const newAddons = addonsAdded.map(e =>{
-        e.price = target.checked ? e.price * 10 : e.price / 10;
-        return e;
-    })
+    
     setInputs({
       ...inputs,
       typeBilling: target.checked ? "yr" : "mo",
-      addonsAdded:newAddons
     })
+    let newAddons;
+    if(target.checked){
+      newAddons = addons.map(a=>{
+        a.price = a.price * 10;
+        return a;
+      })
+    }else{
+      newAddons = addons.map(a=>{
+        a.price = a.price / 10;
+        return a;
+      })
+    }
+    setAddons(newAddons)
   }
   const updateBilling = ({target}) =>{
     document.querySelector(".selected")?.classList.remove("selected");
     target.classList.add("selected");
     const price = target.querySelector(".billing-price").textContent.match(/\d+/).join("");
+    const plan = target.querySelector(".billing-title").textContent;
     setInputs({
       ...inputs,
+      plan,
       price : Number(price),
     })
   }

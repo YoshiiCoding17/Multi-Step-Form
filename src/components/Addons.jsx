@@ -7,7 +7,6 @@ import { Buttons } from "./Buttons"
 
 export const Addons = () => {
   const {inputs,addons} = useContext(AppContext);
-  const {typeBilling} = inputs;
   return (
     <>
         <StepLayout title="Pick add-ons" description="Add-ons help enhance your gaming experience">
